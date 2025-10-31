@@ -4,11 +4,16 @@ Aplicación para la administración del remote config de firebase
 Se debe realizar la instalación de node_module & firebase
 
 ```bash
-npm install -g node-modules
+npm install
 ```
 
 ```bash
 npm install firebase
+```
+
+Para ejecutar local con este comando para front desde la raíz y para backend /backend
+```bash
+npm run dev
 ```
 
 Para otorgar permisos y poder realizar la actualización de remote config
