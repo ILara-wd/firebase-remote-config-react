@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de CORS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Test de Conectividad y CORS</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Health Check</h3>
+        <button onclick="testHealth()">Probar Health Endpoint</button>
+        <div id="healthResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 2: Remote Config Template</h3>
+        <button onclick="testTemplate()">Probar Template Endpoint</button>
+        <div id="templateResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 3: Update Config (Test)</h3>
+        <button onclick="testUpdate()">Probar Update Endpoint</button>
+        <div id="updateResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Instrucciones:</h3>
+        <ol>
+            <li>Asegúrate de que el servidor backend esté corriendo: <code>cd backend && node server.js</code></li>
+            <li>Abre la consola del navegador (F12) para ver más detalles</li>
+            <li>Si ves errores de CORS, verifica la configuración del servidor</li>
+        </ol>
+    </div>
+
+    <script>
+        async function testHealth() {
+            const resultDiv = document.getElementById('healthResult');
+            resultDiv.textContent = 'Probando...';
+            resultDiv.className = 'result';
+
+            try {
+                console.log('🔍 Testing health endpoint...');
+                
+                const response = await fetch('http://localhost:3001/health', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+                console.log('Response:', response);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.textContent = `✅ Éxito!\nEstado: ${response.status}\nDatos: ${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.textContent = `❌ Error HTTP ${response.status}\n${errorText}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.textContent = `❌ Error de red:\n${error.message}\n\nTipo: ${error.constructor.name}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testTemplate() {
+            const resultDiv = document.getElementById('templateResult');
+            resultDiv.textContent = 'Probando...';
+            resultDiv.className = 'result';
+
+            try {
+                console.log('🔍 Testing template endpoint...');
+                
+                const response = await fetch('http://localhost:3001/api/remote-config/template', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+                console.log('Response:', response);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.textContent = `✅ Éxito!\nEstado: ${response.status}\nParámetros encontrados: ${Object.keys(data.parameters || {}).length}\nVersión: ${data.versionNumber}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.textContent = `❌ Error HTTP ${response.status}\n${errorText}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.textContent = `❌ Error de red:\n${error.message}\n\nTipo: ${error.constructor.name}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testUpdate() {
+            const resultDiv = document.getElementById('updateResult');
+            resultDiv.textContent = 'Probando...';
+            resultDiv.className = 'result';
+
+            try {
+                console.log('🔍 Testing update endpoint...');
+                
+                const testConfig = [
+                    { key: 'test_cors', value: 'true', valueType: 'boolean' }
+                ];
+
+                const response = await fetch('http://localhost:3001/api/remote-config/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ configs: testConfig })
+                });
+
+                console.log('Response:', response);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.textContent = `✅ Éxito!\nEstado: ${response.status}\nVersión: ${data.versionNumber}\nMensaje: ${data.message}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.textContent = `❌ Error HTTP ${response.status}\n${errorText}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.textContent = `❌ Error de red:\n${error.message}\n\nTipo: ${error.constructor.name}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        // Auto-ejecutar el test de health al cargar la página
+        window.addEventListener('load', () => {
+            console.log('🚀 Página cargada, ejecutando test automático...');
+            setTimeout(testHealth, 1000);
+        });
+    </script>
+</body>
+</html>
