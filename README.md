@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Firebase (Remote Config)
+Aplicación para la administración del remote config de firebase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Se debe realizar la instalación de node_module & firebase
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install -g node-modules
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install firebase
 ```
+
+Para otorgar permisos y poder realizar la actualización de remote config
+
+https://console.cloud.google.com/iam-admin/iam?project=projectId
+
+Para realizar la configuración de los parámetros de Remote Config, se encuentra este archivo 
+  
+```typescript
+  RemoteConfigAdmin{
+  		...
+  		{ key: 'forceUpdate', value: 'false', valueType: 'boolean' },
+  		...
+  }
+```
+
+Archivo para la configuración de firebase backend/.env
+
+```bash
+# Configuración del proyecto Firebase
+FIREBASE_PROJECT_ID=proyect-id
+
+# Ruta al archivo de credenciales del servicio de Firebase (archivo JSON)
+# Descárgalo desde Firebase Console > Project Settings > Service Accounts
+FIREBASE_SERVICE_ACCOUNT_PATH=.proyect-id-file.json
+
+# Puerto del servidor (opcional, por defecto 3001)
+PORT=3001
+
+# Entorno
+NODE_ENV=development
+```
+
+Archivo para la configuración de firebase en la app front firebase-config.ts
+
+```typescript
+// Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD1Y7Yy3Yk1bX1F3b3QZg4x8x8x8x8x8x8",
+  authDomain: "project-id.firebaseapp.com",
+  projectId: "project-id",
+  storageBucket: "project-id.appspot.com",
+  messagingSenderId: "909090909090",
+  appId: "1:0000000:web:xxxxxxxxyyyyyyyyyyyyyyy",
+  measurementId: "G-XXXXXXX",
+};
+```
+## Configuración de Firebase
+
+### 1. Obtener configuración de Firebase
+
+1. Ve a [Firebase Console](https://console.firebase.google.com/)
+2. Selecciona tu proyecto o crea uno nuevo
+3. Ve a **Configuración del proyecto** ⚙️ > **General**
+4. En la sección **"Tus apps"**, haz clic en `</>` para agregar una app web
+5. Copia la configuración que aparece
+
+### 2. Configurar el proyecto
+
+Reemplaza los valores en `src/firebase-config.ts` con tu configuración real:
+
+```typescript
+const firebaseConfig = {
+  apiKey: "tu-api-key",
+  authDomain: "tu-proyecto.firebaseapp.com",
+  projectId: "tu-proyecto-id",
+  storageBucket: "tu-proyecto.firebasestorage.app",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef123456",
+  measurementId: "G-ABCDEF123"
+};
+```
+
+Nota importante: Mantén estos valores seguros y no los compartas públicamente, especialmente la apiKey.
+
+| Visualización | Administración |
+|-------------|-------------|
+| <img width="621" height="744" alt="0a9sd809a8d0asd" src="https://github.com/user-attachments/assets/ca99b433-1c20-429e-ae17-9dc7729bf684" /> | <img width="269" height="564" alt="ad879as7d9a7sd97ad9aa" src="https://github.com/user-attachments/assets/af74aad5-1578-4015-841e-38a783f95cac" /> |
+
