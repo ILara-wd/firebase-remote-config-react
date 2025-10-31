@@ -11,8 +11,9 @@ const App: React.FC = () => {
   const versionName = useRemoteConfig<string>("versionName", "string");
   const versionCode = useRemoteConfig<number>("versionCode", "number");
   const app_name_state = useRemoteConfig<string>("app_name_state", "string");
-  
-  console.log('Remote Config Values:', { forceUpdate, versionName, versionCode, app_name_state });
+  const app_config = useRemoteConfig<string>("app_config", "string");
+
+  console.log('Remote Config Values:', { forceUpdate, versionName, versionCode, app_name_state, app_config });
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
@@ -75,6 +76,27 @@ const App: React.FC = () => {
             <strong style={{ fontSize: '18px', color: '#333' }}>🏷️ App Name State:</strong>
             <div style={{ fontSize: '18px', color: '#333' }}>
               {app_name_state || '⏳ Cargando...'}
+            </div>
+          </div>
+          <div style={{ backgroundColor: 'white', padding: '15px', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+            <strong style={{ fontSize: '18px', color: '#333' }}>🏷️ App Config:</strong>
+            <div style={{ fontSize: '18px', color: '#333' }}>
+                {app_config ? (
+                <pre style={{ 
+                  fontSize: '12px', 
+                  textAlign: 'left', 
+                  margin: 0, 
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                  maxHeight: '200px',
+                  overflow: 'auto',
+                  backgroundColor: '#f8f9fa',
+                  padding: '8px',
+                  borderRadius: '4px'
+                }}>
+                  {JSON.stringify(JSON.parse(app_config), null, 2)}
+                </pre>
+                ) : '⏳ Cargando...'}
             </div>
           </div>
         </div>

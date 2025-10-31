@@ -12,6 +12,8 @@ const RemoteConfigAdmin: React.FC = () => {
     { key: 'forceUpdate', value: 'false', valueType: 'boolean' },
     { key: 'versionName', value: '1.0.0', valueType: 'string' },
     { key: 'versionCode', value: '1', valueType: 'number' },
+    { key: 'app_name_state', value: 'default', valueType: 'string' },
+    { key: 'app_config', value: '{}', valueType: 'json' }
   ]);
   
   const { updateRemoteConfig, getRemoteConfigTemplate, publishTemplate, loading, error } = useRemoteConfigAdmin();
