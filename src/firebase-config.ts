@@ -3,13 +3,13 @@ import { getRemoteConfig } from "firebase/remote-config";
 
 // Your Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBxtQr1CUtV3mbjbJYfin3m3KVhHvUrIaQ",
-  authDomain: "hangman-8c7fc.firebaseapp.com",
-  projectId: "hangman-8c7fc",
-  storageBucket: "hangman-8c7fc.firebasestorage.app",
-  messagingSenderId: "172039076088",
-  appId: "1:172039076088:web:c94ece6382c378c908630d",
-  measurementId: "G-VV1T5ZPJ0K"
+  apiKey: "AIzaSyD1Y7Yy3Yk1bX1F3b3QZg4x8x8x8x8x8x8",
+  authDomain: "project-id.firebaseapp.com",
+  projectId: "project-id",
+  storageBucket: "project-id.appspot.com",
+  messagingSenderId: "909090909090",
+  appId: "1:0000000:web:xxxxxxxxyyyyyyyyyyyyyyy",
+  measurementId: "G-XXXXXXX",
 };
 
 // Initialize Firebase
